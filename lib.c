@@ -403,7 +403,7 @@ void submitbook()
       printf("\t\t+YOU NEED TO PAY:- %d /- Rs",finalamnt);
     }
     fclose(subbook);
-    Writing the data back to the file
+    //Writing the data back to the file
     subbook=fopen(bookid,"w");
     fprintf(subbook,"%s",datacopy);
     printf("\t\t+YOU HAVE SUCCESSFULLY SUBMITTED THE BOOK!   \t  +");
