@@ -285,10 +285,10 @@ void submitbook()
 {
   //As per the name, this function enter the data of the user who want to return the book
   SYSTEMTIME t;
-  FILE *subbook;
+  FILE *subbook,*userdetails;
   int i,booklen,count;
   char *p;
-  char bookid[1000]={NULL},bookcopy[1000]={NULL},datacopy[1000]={NULL};
+  char bookid[1000]={NULL},bookcopy[1000]={NULL},datacopy[1000]={NULL},mobilenums[10]={NULL};
   char issueday[10]={NULL},issuemonth[10]={NULL},issueyear[10]={NULL};
   char subday[10]={NULL},submonth[10]={NULL},subyear[10]={NULL},keepday[10]={NULL};
   int numday,nummonth,numyear,numkeep,diffday,amnt,cal,fiv,amnt1,amnt2,late,finalamnt;
@@ -298,6 +298,9 @@ void submitbook()
 
   //Converted time to string so that can be inputed in file
   GetLocalTime(&t);
+  sprintf(subday,"%d",t.wDay);
+  sprintf(submonth,"%d",t.wMonth);
+  sprintf(subyear,"%d",t.wYear);
 
   printf("\t\t+Enter the book id:- ");
   scanf("%s",&bookid);
@@ -349,7 +352,7 @@ void submitbook()
       {
         if(bookcopy[i]!='#')
         {
-          //copying the id and the book name (deleting the date adn number)
+          //copying the id and the book name (deleting the date and number)
           strncat(datacopy,&bookcopy[i],1);
         }
         else
@@ -371,9 +374,16 @@ void submitbook()
 
     len=pospower-posper;
     strncpy(issueyear,bookcopy + posper+1, len-1);
+    ///////////eroooororororo
+    len=posamp-pospower;
+    strncpy(mobilenums,bookcopy + pospower+1, len-1);
+    printf("%s",mobilenums);
+    //printf("%s\n",mobilenum);
 
     len=posstar-posamp;
     strncpy(keepday,bookcopy + posamp+1, len-1);
+    //part where i will store the submit date in the user file
+    //userdetails=fopen()
 
     numday=atoi(issueday);
     nummonth=atoi(issuemonth);
@@ -383,7 +393,7 @@ void submitbook()
     diffday=days(numyear,t.wYear,nummonth,t.wMonth,numday,t.wDay);
     if(diffday <= 5)
     {
-      printf("\t\t+YOU DON'T NEED TO PAY ANYTHING!!  \t");
+      printf("\t\t+YOU DON'T NEED TO PAY ANYTHING!!  \t\n");
     }
     else if (diffday > 5 && diffday<numkeep)
     {
@@ -411,10 +421,10 @@ void submitbook()
     }
     fclose(subbook);
     //Writing the data back to the file
-    subbook=fopen(bookid,"w");
-    fprintf(subbook,"%s",datacopy);
-    printf("\t\t+YOU HAVE SUCCESSFULLY SUBMITTED THE BOOK!   \t  +");
-    fclose(subbook);
+    //subbook=fopen(bookid,"w");
+    //fprintf(subbook,"%s",datacopy);
+    //printf("\t\t+YOU HAVE SUCCESSFULLY SUBMITTED THE BOOK!   \t  +");
+    //fclose(subbook);
   }
   else
   {
@@ -463,6 +473,7 @@ int month(int a,int yy)
 
 void userdetails()
 {
+  //As per the name, it shows the detials of the user
   FILE *mob;
   int detailslen,i;
   char ch,mobile[10]={NULL},userdetails[1000]={NULL};
