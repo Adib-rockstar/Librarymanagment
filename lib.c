@@ -85,7 +85,8 @@ void bookmenu()
   printf("\t\t|1.ADD BOOK                               |\n");
   printf("\t\t|2.REMOVE BOOK                            |\n");
   printf("\t\t|3.ISSUE BOOK                             |\n");
-  printf("\t\t|4.SUBMIT BOOK                            |\n\n");
+  printf("\t\t|4.SUBMIT BOOK                            |\n");
+  printf("\t\t|5.USER DETAILS                           |\n\n");
   printf("\t\t|ENTER YOUR ACTION :- ");
   scanf("%d",&choice);
   printf("\t\t|_________________________________________|\n");
@@ -108,7 +109,9 @@ void bookmenu()
     break;
 
     case 5:
-    //userdetails();
+    userdetails();
+    break;
+
     default:
     printf("\t\t+Invalid Entry.!                         +\n");
   }
@@ -183,7 +186,7 @@ void issuebook()
   FILE *issuebook;
   FILE *customerfile;
   int i,moblen,month,count,day;
-  int bookdetailslen;
+  int bookdetailslen,num=0;
   char custname[1000]={NULL},custmob[1000]={NULL},custfile[1000]={NULL},charday[10]={NULL},charmonth[10]={NULL},charyear[10]={NULL};
   char bookid[1000]={NULL},bookidcheck[1000]={NULL},bookdetails[1000]={NULL};
   char mobcop[10]={NULL},keep[1000]={NULL};
@@ -226,14 +229,15 @@ void issuebook()
         {
           count=1;
         }
-        else if(count==1 && bookdetails[i]!='&')
+        else if(count==1 && bookdetails[i]!='&' && num<10)
         {
+          num=num+1;
           strncat(mobcop,&bookdetails[i],1);
         }
       }
       if(count == 1)
       {
-        printf("\t\t+BOOK IS ALREADY ISSUED TO (%s)   \t     +",mobcop);
+        printf("\t\t+BOOK IS ALREADY ISSUED TO (%s)   \t     ",mobcop);
         fclose(customerfile);
         remove(custfile);
         return 0;
@@ -454,4 +458,47 @@ int month(int a,int yy)
       x+=mon[c];
   }
   return(x);
+}
+
+
+void userdetails()
+{
+  FILE *mob;
+  int detailslen,i;
+  char ch,mobile[10]={NULL},userdetails[1000]={NULL};
+  printf("\t\tENTER MOBILE NUMBER TO FETCH DETAILS :- ");
+  scanf("%s",mobile);
+  strcat(mobile,".txt");
+  if(mob=fopen(mobile,"r"))
+  {
+    printf("\t\tBOOK ID \t BOOK NAME \t\tISSUE DATE\n");
+    while((ch=fgetc(mob)) != EOF)
+    {
+      if(ch == '!' || ch == '@' )
+      {
+        printf("\t\t ");
+      }
+      else if( ch == '#')
+      {
+        //ANYTHING
+      }
+      else if( ch == '$' ||ch == '%')
+      {
+        printf("/");
+      }
+      else if (ch == '\n')
+      {
+        printf("\n");
+        printf("\t\t");
+      }
+      else
+      {
+        printf("%c",ch);
+      }
+    }
+  }
+  else
+  {
+    printf("\t\t+NO SUCH USER EXISTED!!!    \t +\n");
+  }
 }
