@@ -10,6 +10,7 @@ void addbook();
 void removebook();
 void issuebook();
 void submitbook();
+void userdetails();
 int days(int,int,int,int,int,int);
 int month(int,int);
 int mon[12]={31,28,31,30,31,30,31,31,30,31,30,31};
@@ -60,7 +61,7 @@ void main()
   {
     printf("\n\t\t|SUCCESSFULLY LOGGED IN \t\t   |\n");
     printf("\t\t|__________________________________________|\n");
-    //sleep(5);
+    sleep(3);
     system("cls");
     bookmenu();
   }
@@ -106,6 +107,8 @@ void bookmenu()
     submitbook();
     break;
 
+    case 5:
+    //userdetails();
     default:
     printf("\t\t+Invalid Entry.!                         +\n");
   }
