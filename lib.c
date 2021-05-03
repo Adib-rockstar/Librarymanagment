@@ -10,29 +10,9 @@ void addbook();
 void removebook();
 void issuebook();
 void submitbook();
-char *substring(char *string, int position, int length)
-{
-   char *p;
-   int c;
-
-   p = malloc(length+1);
-
-   if (p == NULL)
-   {
-      printf("Unable to allocate memory.\n");
-      exit(1);
-   }
-
-   for (c = 0; c < length; c++)
-   {
-      *(p+c) = *(string+position-1);
-      string++;
-   }
-
-   *(p+c) = '\0';
-
-   return p;
-}
+int days(int,int,int,int,int,int);
+int month(int,int);
+int mon[12]={31,28,31,30,31,30,31,31,30,31,30,31};
 
 void main()
 {
@@ -304,12 +284,13 @@ void submitbook()
   char bookid[1000]={NULL},bookcopy[1000]={NULL},datacopy[1000]={NULL};
   char issueday[10]={NULL},issuemonth[10]={NULL},issueyear[10]={NULL};
   char subday[10]={NULL},submonth[10]={NULL},subyear[10]={NULL},keepday[10]={NULL};
+  int numday,nummonth,numyear,numkeep,diffday,amnt,cal,fiv,amnt1,amnt2,late,finalamnt;
   int poshas,posdollar,posper,pospower,posamp,posstar,len;
+
+
+
   //Converted time to string so that can be inputed in file
   GetLocalTime(&t);
-  sprintf(subday,"%d",t.wDay);
-  sprintf(submonth,"%d",t.wMonth);
-  sprintf(subyear,"%d",t.wYear);
 
   printf("\t\t+Enter the book id:- ");
   scanf("%s",&bookid);
@@ -376,19 +357,53 @@ void submitbook()
       return 0;
     }
     len=posdollar-poshas;
-    strncpy(subday,bookcopy + poshas+1, len-1);
-    ///printf("\nday = %s",subday);
+    strncpy(issueday,bookcopy + poshas+1, len-1);
+
     len=posper-posdollar;
-    strncpy(submonth,bookcopy + posdollar+1, len-1);
-    //printf("\nmonth =%s",submonth);
+    strncpy(issuemonth,bookcopy + posdollar+1, len-1);
+
     len=pospower-posper;
-    strncpy(subyear,bookcopy + posper+1, len-1);
-    //printf("\nyear =%s",subyear);
+    strncpy(issueyear,bookcopy + posper+1, len-1);
+
     len=posstar-posamp;
     strncpy(keepday,bookcopy + posamp+1, len-1);
-    //printf("\nkeep =%s",keepday);
+
+    numday=atoi(issueday);
+    nummonth=atoi(issuemonth);
+    numyear=atoi(issueyear);
+    numkeep=atoi(keepday);
+    //Finding differnce between the issued date and today's date
+    diffday=days(numyear,t.wYear,nummonth,t.wMonth,numday,t.wDay);
+    if(diffday <= 5)
+    {
+      printf("\t\t+YOU DON'T NEED TO PAY ANYTHING!!  \t");
+    }
+    else if (diffday > 5 && diffday<numkeep)
+    {
+        cal=numkeep-diffday;
+        amnt=cal*5;
+        printf("\t\t+YOU ISSUED THE BOOK ON : %d / %d / %d ",numday,nummonth,numyear);
+        printf("\t\t\n+YOU SUBMITTED THE BOOK ON : %d / %d / %d \n",t.wDay,t.wMonth,t.wYear);
+        printf("\t\t+FIRST 5 DAYS ARE FREE \n");
+        printf("\t\t+TOTAL NUMBER OF DAYS YOU ISSUED: %d \n",cal);
+        printf("\t\t+YOU NEED TO PAY:- %d /- Rs",amnt);
+    }
+    else if(diffday > numkeep)
+    {
+      fiv=numkeep-5;
+      amnt1=fiv*5;
+      late=diffday-numkeep;
+      amnt2=late*100;
+      finalamnt=amnt1+amnt2;
+      printf("\t\t+YOU ISSUED THE BOOK ON : %d / %d / %d \n",numday,nummonth,numyear);
+      printf("\t\t+YOU SUBMITTED THE BOOK ON : %d / %d / %d \n",t.wDay,t.wMonth,t.wYear);
+      printf("\t\t+FIRST 5 DAYS ARE FREE \n");
+      printf("\t\t+TOTAL NUMBER OF DAYS YOU ISSUED: %d \n",fiv);
+      printf("\t\t+TOTAL LATE DAYS: %d \n",late);
+      printf("\t\t+YOU NEED TO PAY:- %d /- Rs",finalamnt);
+    }
     fclose(subbook);
-    //Writing the data back to the file
+    Writing the data back to the file
     subbook=fopen(bookid,"w");
     fprintf(subbook,"%s",datacopy);
     printf("\t\t+YOU HAVE SUCCESSFULLY SUBMITTED THE BOOK!   \t  +");
@@ -398,5 +413,42 @@ void submitbook()
   {
     printf("\t\t+THIS BOOK ID IS NOT AVAILABLE!!    \t   +\n");
   }
+}
 
+int days(int y1,int y2,int m1,int m2,int d1,int d2)
+{
+  int count=0,i;
+  for(i=y1;i<y2;i++)
+    {
+      if(i%4==0)
+        count+=366;
+      else
+        count+=365;
+    }
+  count-=month(m1,y1);
+  count-=d1;
+  count+=month(m2,y2);
+  count+=d2;
+  if(count<0)
+    count=count*-1;
+  return (count);
+}
+
+
+int month(int a,int yy)
+{
+  int x=0,c;
+  for(c=0;c<a-1;c++)
+  {
+    if(c==1)
+    {
+      if(yy%4==0)
+        x+=29;
+      else
+        x+=28;
+    }
+    else
+      x+=mon[c];
+  }
+  return(x);
 }
