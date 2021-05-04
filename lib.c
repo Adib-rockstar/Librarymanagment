@@ -288,9 +288,9 @@ void submitbook()
   FILE *subbook,*userdetails;
   int i,booklen,count;
   char *p;
-  char bookid[1000]={NULL},bookcopy[1000]={NULL},datacopy[1000]={NULL},mobilenums[10]={NULL};
+  char bookid[1000]={NULL},bookcopy[1000]={NULL},datacopy[1000]={NULL},mobilenums[11]={NULL};
   char issueday[10]={NULL},issuemonth[10]={NULL},issueyear[10]={NULL};
-  char subday[10]={NULL},submonth[10]={NULL},subyear[10]={NULL},keepday[10]={NULL};
+  char subday[10]={NULL},submonth[10]={NULL},subyear[10]={NULL},keepday[10]={NULL},ch;
   int numday,nummonth,numyear,numkeep,diffday,amnt,cal,fiv,amnt1,amnt2,late,finalamnt;
   int poshas,posdollar,posper,pospower,posamp,posstar,len;
 
@@ -374,16 +374,24 @@ void submitbook()
 
     len=pospower-posper;
     strncpy(issueyear,bookcopy + posper+1, len-1);
-    ///////////eroooororororo
+
     len=posamp-pospower;
-    strncpy(mobilenums,bookcopy + pospower+1, len-1);
-    printf("%s",mobilenums);
-    //printf("%s\n",mobilenum);
+    strncpy(mobilenums,bookcopy + pospower+1 , len-1);
+
 
     len=posstar-posamp;
     strncpy(keepday,bookcopy + posamp+1, len-1);
+
     //part where i will store the submit date in the user file
-    //userdetails=fopen()
+    strcpy(mobilenums,".txt");
+    userdetails=fopen(mobilenums,"r+");
+    while((ch=fgetc(mob)) != EOF)
+    {
+      if(ch=='\n')
+      {
+        ch=fgetc(mob))
+      }
+    }
 
     numday=atoi(issueday);
     nummonth=atoi(issuemonth);
