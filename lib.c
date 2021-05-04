@@ -289,7 +289,7 @@ void submitbook()
   int i,booklen,count;
   char *p;
   char bookid[1000]={NULL},bookcopy[1000]={NULL},datacopy[1000]={NULL},mobilenums[11]={NULL};
-  char issueday[10]={NULL},issuemonth[10]={NULL},issueyear[10]={NULL};
+  char issueday[10]={NULL},issuemonth[10]={NULL},issueyear[10]={NULL},bookidsub[1000]={NULL};
   char subday[10]={NULL},submonth[10]={NULL},subyear[10]={NULL},keepday[10]={NULL},ch;
   int numday,nummonth,numyear,numkeep,diffday,amnt,cal,fiv,amnt1,amnt2,late,finalamnt;
   int poshas,posdollar,posper,pospower,posamp,posstar,len;
@@ -304,7 +304,9 @@ void submitbook()
 
   printf("\t\t+Enter the book id:- ");
   scanf("%s",&bookid);
+strcpy(bookidsub,bookid);
   strcat(bookid,".txt");
+
   if(subbook=fopen(bookid,"r"))
   {
     //reading the data of the book with the help of book id
@@ -385,11 +387,15 @@ void submitbook()
     //part where i will store the submit date in the user file
     strcpy(mobilenums,".txt");
     userdetails=fopen(mobilenums,"r+");
-    while((ch=fgetc(mob)) != EOF)
+    while((ch=fgetc(userdetails)) != EOF)
     {
       if(ch=='\n')
       {
-        ch=fgetc(mob))
+        ch=fgetc(userdetails);
+        if(ch==bookidsub)
+        {
+          printf("%s",ch);
+        }
       }
     }
 
