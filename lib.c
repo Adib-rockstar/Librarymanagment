@@ -286,13 +286,13 @@ void submitbook()
   //As per the name, this function enter the data of the user who want to return the book
   SYSTEMTIME t;
   FILE *subbook,*userdetails;
-  int i,booklen,count;
+  int i,booklen,count,check;
   char *p;
-  char bookid[1000]={NULL},bookcopy[1000]={NULL},datacopy[1000]={NULL},mobilenums[11]={NULL};
+  char bookid[1000]={NULL},bookcopy[1000]={NULL},datacopy[1000]={NULL},mobilenums[1000]={NULL};
   char issueday[10]={NULL},issuemonth[10]={NULL},issueyear[10]={NULL},bookidsub[1000]={NULL};
-  char subday[10]={NULL},submonth[10]={NULL},subyear[10]={NULL},keepday[10]={NULL},ch;
+  char subday[10]={NULL},submonth[10]={NULL},subyear[10]={NULL},keepday[10]={NULL},ch,chstring[1000]={NULL};
   int numday,nummonth,numyear,numkeep,diffday,amnt,cal,fiv,amnt1,amnt2,late,finalamnt;
-  int poshas,posdollar,posper,pospower,posamp,posstar,len;
+  int poshas,posdollar,posper,pospower,posamp,posstar,len,len2;
 
 
 
@@ -304,7 +304,8 @@ void submitbook()
 
   printf("\t\t+Enter the book id:- ");
   scanf("%s",&bookid);
-strcpy(bookidsub,bookid);
+  strcpy(bookidsub,bookid);
+  //printf("%s",bookidsub);
   strcat(bookid,".txt");
 
   if(subbook=fopen(bookid,"r"))
@@ -385,19 +386,32 @@ strcpy(bookidsub,bookid);
     strncpy(keepday,bookcopy + posamp+1, len-1);
 
     //part where i will store the submit date in the user file
-    strcpy(mobilenums,".txt");
-    userdetails=fopen(mobilenums,"r+");
-    while((ch=fgetc(userdetails)) != EOF)
-    {
-      if(ch=='\n')
-      {
-        ch=fgetc(userdetails);
-        if(ch==bookidsub)
-        {
-          printf("%s",ch);
-        }
-      }
-    }
+    strcat(mobilenums,".txt");
+    //printf("%s",mobilenums);
+    //if(userdetails=fopen(mobilenums,"r"))
+    //{
+    //  while((ch=fgetc(userdetails))!=EOF)
+    //  {
+    //    if(ch=='\n')
+      //  {
+
+      //    while(ch=fgetc(userdetails)!= '!')
+      //    {
+        //    printf("inside while");
+        //    strncat(chstring,&ch,1);
+        //    ch=fgetc(userdetails);
+        //  }
+        //  printf("%s",chstring);
+        //}
+        //memset( chstring, '\0', sizeof( chstring ));
+      //}
+    //}
+    //else
+    //{
+    //  printf("error");
+//    }
+
+
 
     numday=atoi(issueday);
     nummonth=atoi(issuemonth);
@@ -435,10 +449,10 @@ strcpy(bookidsub,bookid);
     }
     fclose(subbook);
     //Writing the data back to the file
-    //subbook=fopen(bookid,"w");
-    //fprintf(subbook,"%s",datacopy);
-    //printf("\t\t+YOU HAVE SUCCESSFULLY SUBMITTED THE BOOK!   \t  +");
-    //fclose(subbook);
+    subbook=fopen(bookid,"w");
+    fprintf(subbook,"%s",datacopy);
+    printf("\t\t+YOU HAVE SUCCESSFULLY SUBMITTED THE BOOK!   \t  +");
+    fclose(subbook);
   }
   else
   {
